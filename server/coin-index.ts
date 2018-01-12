@@ -28,11 +28,10 @@ export class CoinIndexService {
       axios.get(EXMO_API_KEY)
         .then(res => this.successTickerRequest(res.data))
         .catch(error => console.log(error));
-    }, 1000 * 60 * 5);
+    }, 1000 * 60 * 10);
   }
 
   private successTickerRequest(tickers): void {
-    console.log('successTickerRequest');
     const filtredTicker = COIN_PAIRS.map(pair => {
       const ticker = tickers[pair];
       ticker.name = pair;
@@ -60,8 +59,8 @@ export class CoinIndexService {
     this.tickers.forEach(previousTicker => {
       if (previousTicker.name === ticker.name) {
         if (
-          ticker.dayPercentages > previousTicker.dayPercentages + 2 ||
-          ticker.dayPercentages < previousTicker.dayPercentages + -2
+          ticker.dayPercentages > previousTicker.dayPercentages + 10 ||
+          ticker.dayPercentages < previousTicker.dayPercentages + -10
         ) {
           console.log('sendTelegramNotification');
           this.sendTelegramNotification(ticker);
